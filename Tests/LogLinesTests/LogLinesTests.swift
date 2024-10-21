@@ -1,115 +1,80 @@
-import XCTest
+import Testing
 
-@testable import LogLines
-
-final class LogLinesTests: XCTestCase {
-
-  func testInitTrace() {
-    let line = "[TRC]: Line 84 - Console.WriteLine('Hello World');"
-    XCTAssertEqual(LogLevel(line), LogLevel.trace)
-  }
-
-  func testInitDebug() throws {
+struct LogLinesTests {
     
-    let line = "[DBG]: ; expected"
-    XCTAssertEqual(LogLevel(line), LogLevel.debug)
-  }
-
-  func testInitInfo() throws {
+    @Test func testInitTraceTest() async throws {
+        let line = "[TRC]: Line 84 - Console.WriteLine('Hello World');"
+        #expect(LogLevel(line) == LogLevel.trace)
+    }
     
-    let line = "[INF]: Timezone changed"
-    XCTAssertEqual(LogLevel(line), LogLevel.info)
-  }
-
-  func testInitWarning() throws {
+    @Test func testInitDebugTest() async throws {
+        let line = "[DBG]: ; expected"
+        #expect(LogLevel(line) == LogLevel.debug)
+    }
     
-    let line = "[WRN]: Timezone not set"
-    XCTAssertEqual(LogLevel(line), LogLevel.warning)
-  }
-
-  func testInitError() throws {
+    @Test func testInitInfoTest() async throws {
+        let line = "[INF]: Timezone changed"
+        #expect(LogLevel(line) == LogLevel.info)
+    }
     
-    let line = "[ERR]: Disk full"
-    XCTAssertEqual(LogLevel(line), LogLevel.error)
-  }
-
-  func testInitFatal() throws {
+    @Test func testInitWarningTest() async throws {
+        let line = "[WRN]: Timezone not set"
+        #expect(LogLevel(line) == LogLevel.warning)
+    }
     
-    let line = "[FTL]: Not enough memory"
-    XCTAssertEqual(LogLevel(line), LogLevel.fatal)
-  }
-
-  func testInitUnknownEmpty() throws {
+    @Test func testInitErrorTest() async throws {
+        let line = "[ERR]: Disk full"
+        #expect(LogLevel(line) == LogLevel.error)
+    }
     
-    let line = "Something terrible has happened!"
-    XCTAssertEqual(LogLevel(line), LogLevel.unknown)
-  }
-
-  func testInitUnknownNonStandard() throws {
+    @Test func testInitFatalTest() async throws {
+        let line = "[FTL]: Not enough memory"
+        #expect(LogLevel(line) == LogLevel.fatal)
+    }
     
-    let line = "[XYZ]: Gibberish message.. beep boop.."
-    XCTAssertEqual(LogLevel(line), LogLevel.unknown)
-  }
-
-  func testShortTrace() throws {
+    @Test func testInitUnknownEmptyTest() async throws {
+        let line = "Something terrible has happened!"
+        #expect(LogLevel(line) == LogLevel.unknown)
+    }
     
-    let message = "Line 13 - int myNum = 42;"
-    XCTAssertEqual(LogLevel.trace.shortFormat(message: message), "0:Line 13 - int myNum = 42;")
-  }
-
-  func testShortDebug() throws {
+    @Test func testInitUnknownNonStandardTest() async throws {
+        let line = "[XYZ]: Gibberish message.. beep boop.."
+        #expect(LogLevel(line) == LogLevel.unknown)
+    }
     
-    let message = "The name 'LogLevel' does not exist in the current context"
-    XCTAssertEqual(
-      LogLevel.debug.shortFormat(message: message),
-      "1:The name 'LogLevel' does not exist in the current context")
-  }
-
-  func testShortInfo() throws {
+    @Test func testShortTraceTest() async throws {
+        let message = "Line 13 - int myNum = 42;"
+        #expect(LogLevel.trace.shortFormat(message: message) == "0:Line 13 - int myNum = 42;")
+    }
     
-    let message = "File moved"
-    XCTAssertEqual(LogLevel.info.shortFormat(message: message), "4:File moved")
-  }
-
-  func testShortWarning() throws {
+    @Test func testShortDebugTest() async throws {
+        let message = "The name 'LogLevel' does not exist in the current context"
+        #expect(LogLevel.debug.shortFormat(message: message) ==
+                "1:The name 'LogLevel' does not exist in the current context")
+    }
     
-    let message = "Unsafe password"
-    XCTAssertEqual(LogLevel.warning.shortFormat(message: message), "5:Unsafe password")
-  }
-
-  func testShortError() throws {
+    @Test func testShortInfoTest() async throws {
+        let message = "File moved"
+        #expect(LogLevel.info.shortFormat(message: message) == "4:File moved")
+    }
     
-    let message = "Stack overflow"
-    XCTAssertEqual(LogLevel.error.shortFormat(message: message), "6:Stack overflow")
-  }
-
-  func testShortFatal() throws {
+    @Test func testShortWarningTest() async throws {
+        let message = "Unsafe password"
+        #expect(LogLevel.warning.shortFormat(message: message) == "5:Unsafe password")
+    }
     
-    let message = "Dumping all files"
-    XCTAssertEqual(LogLevel.fatal.shortFormat(message: message), "7:Dumping all files")
-  }
-
-  func testShortUnknownEmpty() throws {
+    @Test func testShortErrorTest() async throws {
+        let message = "Stack overflow"
+        #expect(LogLevel.error.shortFormat(message: message) == "6:Stack overflow")
+    }
     
-    let message = "Wha happon?"
-    XCTAssertEqual(LogLevel.unknown.shortFormat(message: message), "42:Wha happon?")
-  }
-
-  static var allTests = [
-    ("testInitTrace", testInitTrace),
-    ("testInitDebug", testInitDebug),
-    ("testInitInfo", testInitInfo),
-    ("testInitWarning", testInitWarning),
-    ("testInitError", testInitError),
-    ("testInitFatal", testInitFatal),
-    ("testInitUnknownEmpty", testInitUnknownEmpty),
-    ("testInitUnknownNonStandard", testInitUnknownNonStandard),
-    ("testShortTrace", testShortTrace),
-    ("testShortDebug", testShortDebug),
-    ("testShortInfo", testShortInfo),
-    ("testShortWarning", testShortWarning),
-    ("testShortError", testShortError),
-    ("testShortFatal", testShortFatal),
-    ("testShortUnknownEmpty", testShortUnknownEmpty),
-  ]
+    @Test func testShortFatalTest() async throws {
+        let message = "Dumping all files"
+        #expect(LogLevel.fatal.shortFormat(message: message) == "7:Dumping all files")
+    }
+    
+    @Test func testShortUnknownEmptyTest() async throws {
+        let message = "Wha happon?"
+        #expect(LogLevel.unknown.shortFormat(message: message) == "42:Wha happon?")
+    }
 }
